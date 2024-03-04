@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ConfigManagementPlugin
+metadata:
+  name: jsonnet-bundler
+spec:
+  version: v1.0
+  init:
+    command:
+      - jb
+    args:
+      - install
+  generate:
+    command:
+      - sh
+      - -o
+      - nounset
+      - -c
+    args:
+      - jsonnet --jpath vendor --yaml-stream $ARGOCD_ENV_FILENAME
+  discover:
+    fileName: jsonnetfile.json
